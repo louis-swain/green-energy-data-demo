@@ -47,7 +47,7 @@ Stored data is saved in a **PostgreSQL** container and returned as JSON.
 
 ### ✅ 1️⃣ Build the Project
 
-Make sure you have **Java 21**, **Maven**, and **Docker Desktop** running.
+Make sure you have **Java 17**, **Maven**, and **Docker Desktop** running.
 
 ```bash
 mvn clean package
