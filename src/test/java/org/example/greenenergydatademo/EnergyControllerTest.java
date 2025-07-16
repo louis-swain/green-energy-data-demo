@@ -35,7 +35,6 @@ public class EnergyControllerTest
     void addReturns200() throws Exception {
         String body = """
           {
-            "id": 1,
             "source": "Solar",
             "kWh": 42.5
           }

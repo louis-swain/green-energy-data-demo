@@ -30,10 +30,10 @@ GET /energy
 POST /energy
 ```
 
-**Example POST body:**
+**Example POST body (no `id` needed — the DB generates it):**
+
 ```json
 {
-  "id": 1,
   "source": "Solar",
   "kWh": 42.5
 }
@@ -78,7 +78,7 @@ curl http://localhost:8080/energy
 ```bash
 curl -X POST http://localhost:8080/energy \
   -H "Content-Type: application/json" \
-  -d '{"id":1,"source":"Solar","kWh":42.5}'
+  -d '{"source":"Solar","kWh":42.5}'
 ```
 
 ---
