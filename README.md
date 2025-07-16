@@ -2,6 +2,7 @@
 
 ![Java](https://img.shields.io/badge/Java-17-blue)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.x-brightgreen)
+![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-blue)
 ![Docker](https://img.shields.io/badge/Containerized-Docker-blue)
 ![CI/CD](https://img.shields.io/badge/CI/CD-GitHub_Actions-yellow)
 
@@ -9,33 +10,36 @@
 
 ## 📖 Overview
 
-This is a **simple Spring Boot REST API** that serves dummy green energy data.  
+This is a **simple Spring Boot REST API** that stores and serves green energy readings via a PostgreSQL database.  
 It demonstrates how to:
-- Build a back-end Java service using **Spring Boot**
-- Containerize the service using **Docker**
-- Automate tests and builds using **GitHub Actions**
+- Build a back-end Java service using **Spring Boot** & **Spring Data JPA**
+- Containerize the whole stack using **Docker Compose**
+- Mock out dependencies for fast **unit & web tests**
+- Prepare for automated builds with **GitHub Actions**
 
-👉 This project is part of my personal *skills bridge* — moving my extensive experience with large-scale, regulated back-end systems into a **modern cloud-native stack** for mission-driven sectors like sustainability, clean tech, or scientific research.
+👉 This is part of my personal *skills bridge* — proving how my experience in large-scale, regulated back-end systems maps to a **modern cloud-native stack** for mission-driven sectors like sustainability, clean tech, or scientific research.
 
 ---
 
 ## ⚡️ What It Does
 
-When running, the API exposes a simple endpoint:
+When running, the API exposes two simple endpoints:
 
 ```
 GET /energy
+POST /energy
 ```
 
-**Example response:**
-
+**Example POST body:**
 ```json
-[
-  "Solar: 42kWh",
-  "Wind: 25kWh",
-  "Hydro: 10kWh"
-]
+{
+  "id": 1,
+  "source": "Solar",
+  "kWh": 42.5
+}
 ```
+
+Stored data is saved in a **PostgreSQL** container and returned as JSON.
 
 ---
 
@@ -43,7 +47,7 @@ GET /energy
 
 ### ✅ 1️⃣ Build the Project
 
-Make sure you have **Java 17**, **Maven**, and **Docker Desktop** installed & running.
+Make sure you have **Java 21**, **Maven**, and **Docker Desktop** running.
 
 ```bash
 mvn clean package
@@ -51,68 +55,84 @@ mvn clean package
 
 ---
 
-### ✅ 2️⃣ Build the Docker Image
+### ✅ 2️⃣ Run with Docker Compose
 
 ```bash
-docker build -t green-energy-data-demo .
+docker-compose up --build
+```
+
+This spins up:
+- `postgres` — the database
+- `app` — the Spring Boot service
+
+---
+
+### ✅ 3️⃣ Test the API
+
+**GET all readings:**
+```bash
+curl http://localhost:8080/energy
+```
+
+**POST a reading:**
+```bash
+curl -X POST http://localhost:8080/energy \
+  -H "Content-Type: application/json" \
+  -d '{"id":1,"source":"Solar","kWh":42.5}'
 ```
 
 ---
 
-### ✅ 3️⃣ Run the Container
+## 🧪 Tests
 
-```bash
-docker run -p 8080:8080 green-energy-data-demo
-```
-
-Then open your browser and visit:
-
-```
-http://localhost:8080/energy
-```
-
-You should see the energy data response!
+A basic **controller test**:
+- Uses `@WebMvcTest` for a lightweight web slice.
+- Uses `@MockBean` to mock the repository — no real DB needed.
+- Runs automatically with:
+  ```bash
+  mvn test
+  ```
 
 ---
 
 ## 🐙 CI/CD
 
-A basic **GitHub Actions** workflow (`.github/workflows/maven.yml`) runs:
-- `mvn package`
+A basic **GitHub Actions** workflow (`.github/workflows/maven.yml`) can run:
+- `mvn clean package`
 - `mvn test`
 
 ...on every push to `main`.
-
-This demonstrates a clean **build pipeline** for a typical modern back-end project.
 
 ---
 
 ## 🔍 Why This Project Exists
 
 > **“Bridging old to new.”**  
-I’ve spent 12+ years building mission-critical, high-scale back-end systems in healthcare using core Java and custom-built architectures.
+I spent 12+ years building mission-critical, high-scale back-end systems in healthcare, using core Java and bespoke architectures.
 
-This project shows my practical commitment to mastering:
-- **Modern frameworks** (Spring Boot)
-- **Containerization** (Docker)
-- **Automated pipelines** (CI/CD)
+This shows I’m mastering:
+- **Modern frameworks** (Spring Boot, JPA)
+- **Containerization** (Docker Compose)
+- **Test best practices** (MockMvc, mocks)
+- **Pipeline readiness** (CI/CD)
 
-It connects what I *already know* (high-reliability, secure data systems) with today’s cloud-native stacks — ready for roles in **green energy**, **sustainability**, or **scientific R&D**.
+✅ It connects what I *already know* — performance, reliability, security — to today’s **cloud-native stacks** ready for roles in **green energy**, **sustainability**, or **scientific R&D**.
 
 ---
 
 ## 🗺️ Next Steps
 
-✔️ Add real datasets (e.g. open UK solar/wind data)  
-✔️ Store and serve data from a database (PostgreSQL or MongoDB)  
-✔️ Expand endpoints: `/forecast`, `/usage`, etc.  
-✔️ Deploy to a cloud provider with automated pipelines
+✔️ Add real open datasets (e.g. UK solar/wind data)  
+✔️ Add custom queries to the repository (e.g. find by source)  
+✔️ Write integration tests with **Testcontainers**  
+✔️ Expand the API: `/forecast`, `/usage`, `/stats`  
+✔️ Deploy to a cloud provider with a CI/CD pipeline
 
 ---
 
 ## 📜 License
 
-This project is open for educational demonstration — feel free to fork, learn, or adapt!
+Open for learning & demonstration — fork or adapt freely!
 
 ---
 

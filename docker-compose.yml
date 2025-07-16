@@ -1,0 +1,23 @@
+services:  # 👈 Here you define all the containers that should run together
+
+  postgres:  # 👈 First service: your PostgreSQL database
+    image: postgres:15  # 👈 Use the official Postgres image, version 15
+    container_name: postgres_db  # 👈 Optional: friendly name for the container
+    environment:  # 👈 Env vars passed to the container
+      POSTGRES_DB: energydb  # 👈 Create a database named 'energydb'
+      POSTGRES_USER: postgres  # 👈 DB username
+      POSTGRES_PASSWORD: yourpassword  # 👈 DB password
+    ports:
+      - "5432:5432"  # 👈 Map host port 5432 to container port 5432 (Postgres default)
+
+  app:  # 👈 Second service: your Spring Boot app
+    build: .  # 👈 Build this container using the local Dockerfile in the current directory
+    container_name: energy_app  # 👈 Optional: friendly name
+    ports:
+      - "8080:8080"  # 👈 Expose your app on localhost:8080
+    depends_on:
+      - postgres  # 👈 Ensure Postgres starts before your app tries to connect
+    environment:  # 👈 Pass DB connection info to your app
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/energydb  # 👈 Use Postgres service name for hostname
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: yourpassword
