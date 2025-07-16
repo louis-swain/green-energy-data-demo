@@ -9,6 +9,8 @@ services:  # 👈 Here you define all the containers that should run together
       POSTGRES_PASSWORD: yourpassword  # 👈 DB password
     ports:
       - "5432:5432"  # 👈 Map host port 5432 to container port 5432 (Postgres default)
+    volumes:
+      - pgdata:/var/lib/postgresql/data  # 👈 Persist Postgres data to named volume
 
   app:  # 👈 Second service: your Spring Boot app
     build: .  # 👈 Build this container using the local Dockerfile in the current directory
@@ -21,3 +23,6 @@ services:  # 👈 Here you define all the containers that should run together
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/energydb  # 👈 Use Postgres service name for hostname
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: yourpassword
+
+volumes:
+  pgdata:  # 👈 Named volume for persistent Postgres storage
