@@ -2,7 +2,9 @@
 
 ![Java](https://img.shields.io/badge/Java-17-blue)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.x-brightgreen)
-![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-blue)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue)
+![HTML](https://img.shields.io/badge/HTML-5-orange)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5.x-purple)
 ![Docker](https://img.shields.io/badge/Containerized-Docker-blue)
 ![CI/CD](https://img.shields.io/badge/CI/CD-GitHub_Actions-yellow)
 
@@ -10,36 +12,26 @@
 
 ## 📖 Overview
 
-This is a **simple Spring Boot REST API** that stores and serves green energy readings via a PostgreSQL database.  
+This is a **modern Spring Boot REST API** with a simple **HTML/Bootstrap view** for green energy data.  
 It demonstrates how to:
-- Build a back-end Java service using **Spring Boot** & **Spring Data JPA**
-- Containerize the whole stack using **Docker Compose**
-- Mock out dependencies for fast **unit & web tests**
-- Prepare for automated builds with **GitHub Actions**
 
-👉 This is part of my personal *skills bridge* — proving how my experience in large-scale, regulated back-end systems maps to a **modern cloud-native stack** for mission-driven sectors like sustainability, clean tech, or scientific research.
+- Build a robust back-end API with **Spring Boot**
+- Store data in **PostgreSQL** with Docker Compose
+- Serve human-friendly HTML using **Thymeleaf + Bootstrap**
+- Add **pagination** to handle large datasets
+- Automate builds/tests with **GitHub Actions**
+
+👉 This project bridges my **deep experience** in regulated, high-scale Java systems with today’s **cloud-native** stacks — ready for **green energy**, **sustainability**, or **scientific data** roles.
 
 ---
 
 ## ⚡️ What It Does
 
-When running, the API exposes two simple endpoints:
+**Core endpoints:**
 
-```
-GET /energy
-POST /energy
-```
-
-**Example POST body (no `id` needed — the DB generates it):**
-
-```json
-{
-  "source": "Solar",
-  "kWh": 42.5
-}
-```
-
-Stored data is saved in a **PostgreSQL** container and returned as JSON.
+- `GET /energy` → JSON API for programmatic use
+- `GET /energy-view` → Paginated, Bootstrap-styled HTML table for humans
+- `POST /import` → Upload a CSV to bulk-import green energy data
 
 ---
 
@@ -47,93 +39,71 @@ Stored data is saved in a **PostgreSQL** container and returned as JSON.
 
 ### ✅ 1️⃣ Build the Project
 
-Make sure you have **Java 17**, **Maven**, and **Docker Desktop** running.
+Make sure you have **Java 17**, **Maven**, and **Docker Desktop** installed & running.
 
-```bash
+\`\`\`bash
 mvn clean package
-```
+\`\`\`
 
 ---
 
-### ✅ 2️⃣ Run with Docker Compose
+### ✅ 2️⃣ Build & Start the Containers
 
-```bash
-docker-compose up --build
-```
+\`\`\`bash
+docker-compose up --build -d
+\`\`\`
 
-This spins up:
-- `postgres` — the database
-- `app` — the Spring Boot service
+This spins up both the back-end and PostgreSQL DB with persistent storage.
 
 ---
 
-### ✅ 3️⃣ Test the API
+### ✅ 3️⃣ Use the API or the HTML View
 
-**GET all readings:**
-```bash
-curl http://localhost:8080/energy
-```
+- **API (JSON)**: [http://localhost:8080/energy](http://localhost:8080/energy)
+- **HTML View**: [http://localhost:8080/energy-view](http://localhost:8080/energy-view)
 
-**POST a reading:**
-```bash
-curl -X POST http://localhost:8080/energy \
-  -H "Content-Type: application/json" \
-  -d '{"source":"Solar","kWh":42.5}'
-```
+Use the HTML view to page through your data in a clean table.
 
 ---
 
-## 🧪 Tests
+### ✅ 4️⃣ Import a CSV
 
-A basic **controller test**:
-- Uses `@WebMvcTest` for a lightweight web slice.
-- Uses `@MockBean` to mock the repository — no real DB needed.
-- Runs automatically with:
-  ```bash
-  mvn test
-  ```
+Use `curl` to POST a CSV:
 
----
+\`\`\`bash
+curl -X POST http://localhost:8080/import \
+-H "Content-Type: multipart/form-data" \
+-F "file=@yourfile.csv"
+\`\`\`
 
-## 🐙 CI/CD
-
-A basic **GitHub Actions** workflow (`.github/workflows/maven.yml`) can run:
-- `mvn clean package`
-- `mvn test`
-
-...on every push to `main`.
+✅ The file is processed once — your DB persists it thanks to Docker volumes.
 
 ---
 
-## 🔍 Why This Project Exists
+## 🗂️ Tech Highlights
 
-> **“Bridging old to new.”**  
-I spent 12+ years building mission-critical, high-scale back-end systems in healthcare, using core Java and bespoke architectures.
-
-This shows I’m mastering:
-- **Modern frameworks** (Spring Boot, JPA)
-- **Containerization** (Docker Compose)
-- **Test best practices** (MockMvc, mocks)
-- **Pipeline readiness** (CI/CD)
-
-✅ It connects what I *already know* — performance, reliability, security — to today’s **cloud-native stacks** ready for roles in **green energy**, **sustainability**, or **scientific R&D**.
+- **Languages/Frameworks:** Java 17, Spring Boot 3.x, Thymeleaf
+- **DB:** PostgreSQL 16 in Docker
+- **Containerization:** Docker & Compose
+- **Frontend:** Bootstrap 5.x for a clean, responsive UI
+- **CI/CD:** GitHub Actions for build/test automation
+- **Extras:** Supports pagination, CSV import, API & HTML views
 
 ---
 
 ## 🗺️ Next Steps
 
-✔️ Add real open datasets (e.g. UK solar/wind data)  
-✔️ Add custom queries to the repository (e.g. find by source)  
-✔️ Write integration tests with **Testcontainers**  
-✔️ Expand the API: `/forecast`, `/usage`, `/stats`  
-✔️ Deploy to a cloud provider with a CI/CD pipeline
+✔️ Add data visualizations with **Chart.js**  
+✔️ Add filters by fuel type or date range  
+✔️ Add authentication for secure endpoints  
+✔️ Deploy to a real cloud host (e.g., Heroku, Fly.io, Railway)
 
 ---
 
 ## 📜 License
 
-Open for learning & demonstration — fork or adapt freely!
+This project is open for educational demonstration — fork it, learn from it, adapt it freely!
 
 ---
 
-**Built with ☕ + 🐳 + ⚙️ by Louis Swain**
+**Built by Louis Swain — bridging reliable, large-scale Java back-end skills into the modern sustainability & clean tech space.** ☕️🐳⚙️
