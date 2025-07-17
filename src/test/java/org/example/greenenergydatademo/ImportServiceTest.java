@@ -7,17 +7,19 @@ import org.springframework.mock.web.MockMultipartFile;
 import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 /**
  * Test service
  */
-class ImporterServiceTest {
+class ImportServiceTest {
 
     @Test
     void parsesAndSavesCsv() throws Exception {
         // Arrange
-        String csvContent = "DATETIME,SOURCE,MWH\n" +
-                "2024-01-01T00:00:00,SOLAR,123.4\n";
+        String csvContent = "DATETIME,SOLAR\n" +
+                "2024-01-01T00:00:00,123.4\n";
 
         MockMultipartFile file = new MockMultipartFile(
                 "file", "test.csv", "text/csv", csvContent.getBytes(StandardCharsets.UTF_8)
@@ -25,13 +27,16 @@ class ImporterServiceTest {
 
         EnergyReadingRepository fakeRepo = Mockito.mock(EnergyReadingRepository.class);
 
+        when(fakeRepo.save(any(EnergyReading.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
         ImportService service = new ImportService(fakeRepo);
 
         // Act
-        int rows = service.importCsv(file);
+        int rows = service.importCsv(file.getInputStream());
 
         // Assert
         assertThat(rows).isEqualTo(1);
-        Mockito.verify(fakeRepo, Mockito.times(1)).save(Mockito.any(EnergyReading.class));
+        Mockito.verify(fakeRepo, Mockito.times(1)).save(any(EnergyReading.class));
     }
 }
