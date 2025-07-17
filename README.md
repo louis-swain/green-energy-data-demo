@@ -29,11 +29,18 @@ It demonstrates how to:
 
 ## ⚡️ What It Does
 
-**Core endpoints:**
+### ✅ REST API
 
-- `GET /energy` → JSON API for integrations
-- `GET /energy-view` → Paginated HTML view for humans
-- `POST /import` → Upload a CSV file to bulk-load readings
+- `GET /energy` → JSON list of all readings
+- `POST /energy` → Add a single reading
+- `POST /import` → Upload a CSV file
+
+### ✅ Web UI
+
+- `GET /energy-view` → Paginated HTML table of energy data
+  - Filter by **fuel type**
+  - Page through results
+  - Clean Bootstrap styling
 
 ---
 
@@ -43,17 +50,17 @@ It demonstrates how to:
 
 Make sure you have **Java 17**, **Maven**, and **Docker Desktop** installed & running.
 
-\`\`\`bash
+```bash
 mvn clean package
-\`\`\`
+```
 
 ---
 
 ### ✅ 2️⃣ Build & Start the Containers
 
-\`\`\`bash
+```bash
 docker-compose up --build -d
-\`\`\`
+```
 
 This spins up both the Spring Boot API and PostgreSQL DB with a persistent volume.
 
@@ -72,11 +79,11 @@ Browse your green energy data in a clean Bootstrap table.
 
 Use `curl` to POST a CSV:
 
-\`\`\`bash
+```bash
 curl -X POST http://localhost:8080/import \
 -H "Content-Type: multipart/form-data" \
 -F "file=@yourfile.csv"
-\`\`\`
+```
 
 The file is processed once — your DB persists it in a Docker volume.
 
@@ -86,9 +93,9 @@ The file is processed once — your DB persists it in a Docker volume.
 
 To run **all unit tests** locally:
 
-\`\`\`bash
+```bash
 mvn test
-\`\`\`
+```
 
 ---
 
@@ -107,7 +114,7 @@ mvn test
 ## 🗺️ Next Steps
 
 ✔️ Add data visualizations with **Chart.js**  
-✔️ Add fuel type & date filters  
+✔️ Add advanced filters (by date range)  
 ✔️ Add authentication for secure endpoints  
 ✔️ Deploy to a real cloud host
 

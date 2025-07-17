@@ -10,6 +10,18 @@
 <div class="container">
     <h1 class="mb-4">Energy Readings</h1>
 
+    <form method="get" action="/energy-view" class="mb-3">
+        <label for="fuelType">Filter by Fuel Type:</label>
+        <select name="fuelType" id="fuelType" onchange="this.form.submit()">
+            <option th:if="${fuelType == null}" selected value="">All</option>
+            <option th:each="ft : ${fuelTypes}"
+                    th:value="${ft}"
+                    th:text="${ft}"
+                    th:selected="${fuelType} == ${ft}">
+            </option>
+        </select>
+    </form>
+
     <table class="table table-striped table-bordered">
         <thead>
         <tr>
@@ -20,7 +32,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="reading : ${page.content}">
+        <tr th:each="reading : ${energyPage.content}">
             <td th:text="${reading.id}"></td>
             <td th:text="${reading.dateTime}"></td>
             <td th:text="${reading.source}"></td>
@@ -29,22 +41,43 @@
         </tbody>
     </table>
 
-    <nav>
+    <nav aria-label="Page navigation">
         <ul class="pagination">
-            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                <a class="page-link" th:href="@{/energy-view(page=${currentPage - 1})}">Previous</a>
+
+            <!-- Previous -->
+            <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                <a class="page-link" th:href="@{/energy-view(page=${currentPage - 2}, size=${energyPage.size})}">Previous</a>
             </li>
 
-            <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
-                class="page-item" th:classappend="${i == currentPage} ? 'active'">
-                <a class="page-link" th:href="@{/energy-view(page=${i})}" th:text="${i + 1}"></a>
+            <!-- Always show first page -->
+            <li th:if="${showFirst}">
+                <a class="page-link" th:href="@{/energy-view(page=0, size=${energyPage.size})}">1</a>
             </li>
 
-            <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
-                <a class="page-link" th:href="@{/energy-view(page=${currentPage + 1})}">Next</a>
+            <!-- Ellipsis if needed -->
+            <li class="page-link" th:if="${showFirst}">...</li>
+
+            <!-- Numbered pages in window -->
+            <li th:each="pageNum : ${pageNumbers}"
+                class="page-item" th:classappend="${pageNum} == ${currentPage} ? 'active'">
+                <a class="page-link" th:href="@{/energy-view(page=${pageNum - 1}, size=${energyPage.size})}" th:text="${pageNum}">1</a>
+            </li>
+
+            <!-- Ellipsis if needed -->
+            <li class="page-link" th:if="${showLast}">...</li>
+
+            <!-- Always show last page -->
+            <li th:if="${showLast}">
+                <a class="page-link" th:href="@{/energy-view(page=${totalPages - 1}, size=${energyPage.size})}" th:text="${totalPages}">Last</a>
+            </li>
+
+            <!-- Next -->
+            <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                <a class="page-link" th:href="@{/energy-view(page=${currentPage}, size=${energyPage.size})}">Next</a>
             </li>
         </ul>
     </nav>
+
 </div>
 </body>
 </html>
