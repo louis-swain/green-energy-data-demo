@@ -7,21 +7,23 @@
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5.x-purple)
 ![Docker](https://img.shields.io/badge/Containerized-Docker-blue)
 ![CI/CD](https://img.shields.io/badge/CI/CD-GitHub_Actions-yellow)
+![Tests](https://img.shields.io/badge/Tests-JUnit+Mockito-green)
 
 ---
 
 ## 📖 Overview
 
-This is a **modern Spring Boot REST API** with a simple **HTML/Bootstrap view** for green energy data.  
+This is a **modern Spring Boot REST API** with a clean **HTML/Bootstrap view** for green energy data.  
 It demonstrates how to:
 
 - Build a robust back-end API with **Spring Boot**
-- Store data in **PostgreSQL** with Docker Compose
+- Store data in **PostgreSQL** with Docker Compose & volumes
 - Serve human-friendly HTML using **Thymeleaf + Bootstrap**
-- Add **pagination** to handle large datasets
-- Automate builds/tests with **GitHub Actions**
+- Add **pagination** for large datasets
+- Automate builds & tests with **GitHub Actions**
+- Write **unit & integration tests** with **JUnit5 + Mockito**
 
-👉 This project bridges my **deep experience** in regulated, high-scale Java systems with today’s **cloud-native** stacks — ready for **green energy**, **sustainability**, or **scientific data** roles.
+👉 It bridges my 12+ years in high-scale Java back-ends into modern **cloud-native**, **green tech**, or **scientific data** roles.
 
 ---
 
@@ -29,9 +31,9 @@ It demonstrates how to:
 
 **Core endpoints:**
 
-- `GET /energy` → JSON API for programmatic use
-- `GET /energy-view` → Paginated, Bootstrap-styled HTML table for humans
-- `POST /import` → Upload a CSV to bulk-import green energy data
+- `GET /energy` → JSON API for integrations
+- `GET /energy-view` → Paginated HTML view for humans
+- `POST /import` → Upload a CSV file to bulk-load readings
 
 ---
 
@@ -53,7 +55,7 @@ mvn clean package
 docker-compose up --build -d
 \`\`\`
 
-This spins up both the back-end and PostgreSQL DB with persistent storage.
+This spins up both the Spring Boot API and PostgreSQL DB with a persistent volume.
 
 ---
 
@@ -62,7 +64,7 @@ This spins up both the back-end and PostgreSQL DB with persistent storage.
 - **API (JSON)**: [http://localhost:8080/energy](http://localhost:8080/energy)
 - **HTML View**: [http://localhost:8080/energy-view](http://localhost:8080/energy-view)
 
-Use the HTML view to page through your data in a clean table.
+Browse your green energy data in a clean Bootstrap table.
 
 ---
 
@@ -76,7 +78,17 @@ curl -X POST http://localhost:8080/import \
 -F "file=@yourfile.csv"
 \`\`\`
 
-✅ The file is processed once — your DB persists it thanks to Docker volumes.
+The file is processed once — your DB persists it in a Docker volume.
+
+---
+
+### ✅ 5️⃣ Run Tests Locally
+
+To run **all unit tests** locally:
+
+\`\`\`bash
+mvn test
+\`\`\`
 
 ---
 
@@ -85,18 +97,19 @@ curl -X POST http://localhost:8080/import \
 - **Languages/Frameworks:** Java 17, Spring Boot 3.x, Thymeleaf
 - **DB:** PostgreSQL 16 in Docker
 - **Containerization:** Docker & Compose
-- **Frontend:** Bootstrap 5.x for a clean, responsive UI
-- **CI/CD:** GitHub Actions for build/test automation
-- **Extras:** Supports pagination, CSV import, API & HTML views
+- **Frontend:** Bootstrap 5.x
+- **CI/CD:** GitHub Actions
+- **Testing:** JUnit5, Mockito, Spring Test
+- **Extras:** Pagination, CSV import, API & HTML views
 
 ---
 
 ## 🗺️ Next Steps
 
 ✔️ Add data visualizations with **Chart.js**  
-✔️ Add filters by fuel type or date range  
+✔️ Add fuel type & date filters  
 ✔️ Add authentication for secure endpoints  
-✔️ Deploy to a real cloud host (e.g., Heroku, Fly.io, Railway)
+✔️ Deploy to a real cloud host
 
 ---
 
@@ -106,4 +119,4 @@ This project is open for educational demonstration — fork it, learn from it, a
 
 ---
 
-**Built by Louis Swain — bridging reliable, large-scale Java back-end skills into the modern sustainability & clean tech space.** ☕️🐳⚙️
+**Built by Louis Swain — bridging robust Java back-end skills into modern sustainability & clean tech.** ☕️🐳⚙️
