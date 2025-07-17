@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Energy Readings</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2em; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background: #f4f4f4; }
+    </style>
+</head>
+<body>
+<h1>Energy Readings</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Date/Time</th>
+        <th>Source</th>
+        <th>MWh</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="reading : ${readings}">
+        <td th:text="${reading.id}"></td>
+        <td th:text="${reading.dateTime}"></td>
+        <td th:text="${reading.source}"></td>
+        <td th:text="${reading.mWh}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
